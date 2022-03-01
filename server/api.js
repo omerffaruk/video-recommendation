@@ -54,4 +54,21 @@ router.get('/:id', (req, res) => {
   })
 })
 
+router.delete('/:id', (req, res) => {
+  const videoId = req.params.id;
+  const selectVideoQuery = 'SELECT * FROM videos WHERE id=$1';
+  pool.query(selectVideoQuery, [videoId])
+  .then((result) => {
+    if(result.rows.length === 0) {
+      res.status(400).send(`Could not delete! There is no video with the id of ${videoId}!`);
+    }else {
+      const deleteQuery = 'DELETE FROM videos WHERE id=$1';
+      pool.query(deleteQuery, [videoId])
+      .then(() => {
+        res.send(`The video with the id of ${videoId} has been deleted!`);
+      })
+    }
+  })
+})
+
 export default router;
