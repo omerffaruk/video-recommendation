@@ -1,4 +1,5 @@
 import { Router } from "express";
+import pool from "./utils/pool";
 
 const router = Router();
 
