@@ -41,4 +41,17 @@ router.post('/', (req, res) => {
   }
 }) 
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const query = 'SELECT * FROM videos WHERE id=$1';
+  pool.query(query, [id])
+  .then((result) => {
+    if(result.rows.length === 0) {
+      res.status(400).send(`There is no video with the id of ${id}`);
+    } else {
+      res.status(200).send(result.rows);
+    }
+  })
+})
+
 export default router;
